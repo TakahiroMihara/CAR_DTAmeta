@@ -1,15 +1,6 @@
 .Rhistory
 .RData
 .Rproj.user/
-.Ruserdata
 
-# outputs (生成物は基本コミットしない)
 outputs/
-*.html
-*.pdf
-*.png
-*.jpg
 
-# renv library (通常コミット不要)
-renv/library/
-renv/python/
