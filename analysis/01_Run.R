@@ -28,8 +28,8 @@ sum_bm1 <- summary(bm1)
 print(sum_bm1)
 capture.output(sum_bm1, file = "outputs/reitsma_summary.txt")
 
-# AUC (bootstrap) — 再現性を厳密にするなら seed を有効化
-# set.seed(1)
+# AUC (bootstrap) 
+set.seed(1)
 auc_res <- AUC_boot(df$TP, df$FP, df$FN, df$TN)
 print(auc_res)
 capture.output(auc_res, file = "outputs/auc_boot.txt")
@@ -39,7 +39,7 @@ res_LR <- summary(SummaryPts(bm1))
 print(res_LR)
 capture.output(res_LR, file = "outputs/summary_points_LR.txt")
 
-# Publication bias (Generalized Egger) — attach()を使わずに書く
+# Publication bias (Generalized Egger) 
 dta1 <- edta(df$TP, df$FN, df$TN, df$FP)
 res1 <- rma(dta1$y[,1], dta1$S[,1])
 res2 <- rma(dta1$y[,2], dta1$S[,3])
