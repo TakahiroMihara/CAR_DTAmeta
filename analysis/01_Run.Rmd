@@ -1,0 +1,81 @@
+---
+title: "CAR_DTAmeta"
+output: html_document
+date: "2025-12-22"
+---
+
+
+# packages
+```{r}
+pacman::p_load(mada, dmetatools, metafor, MVPBT, tidyverse, here)
+```
+
+# Data
+```{r}
+df <- readr::read_csv(here::here("data", "data_CAR_DTA.csv"), 
+                      show_col_types = FALSE)
+
+```
+
+
+# analysis
+```{r}
+DTA_summary<- mada::madad(df)
+DTA_summary
+
+```
+
+
+## pair plot
+```{r}
+
+forest(madad(df), type="sens", xlab = "sensitivity", snames=df$study)
+
+```
+
+
+
+
+
+```{r}
+
+forest(madad(df), type="spec", xlab = "specificity", snames=df$study)
+
+```
+
+
+## Reitsma Random-effects model
+```{r}
+bm1 <- reitsma(df)
+sum_bm1 <- summary(bm1)			
+sum_bm1
+
+```
+
+
+### AUC 
+```{r}
+# set.seed(1)
+AUC_boot(df$TP, df$FP, df$FN, df$TN)
+```
+
+
+### LR+, LR-
+```{r}
+res_LR <- summary(SummaryPts(bm1))
+print(res_LR)
+
+```
+
+## Publication bias
+generalized Egger
+
+```{r}
+
+dta1 <- edta(df$TP, df$FN, df$TN, df$FP)
+res1 <- rma(dta1$y[,1], dta1$S[,1])
+res2 <- rma(dta1$y[,2], dta1$S[,3])
+MVPBT3(dta1$y, dta1$S)
+```
+
+#END
